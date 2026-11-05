@@ -146,3 +146,13 @@ export interface GuestProfile {
   }[];
   transactionHistory: WalletTransaction[];
 }
+
+export interface DailyRevenueRecord {
+  date: string;
+  day: string;
+  club: number;
+  lounge: number;
+  hotel: number;
+  total: number;
+  notes?: string;
+}

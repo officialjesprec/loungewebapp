@@ -284,33 +284,80 @@ export default function App() {
   };
 
   const handleVerifyQrCode = (code: string) => {
-    const upper = code.toUpperCase();
+    const trimmed = code.trim();
+    const upper = trimmed.toUpperCase();
+
+    // Direct lookup against state bookings
+    const matchedBooking = bookings.find(
+      (b) =>
+        b.qrCode.toUpperCase() === upper ||
+        upper.includes(b.qrCode.toUpperCase()) ||
+        b.id.toUpperCase() === upper
+    );
+    if (matchedBooking) {
+      return {
+        valid: true,
+        bookingId: matchedBooking.id,
+        guestName: matchedBooking.guestName,
+        guestPhone: matchedBooking.guestPhone,
+        vertical: matchedBooking.vertical,
+        reference: matchedBooking.reference,
+        details: matchedBooking.details,
+        amountNaira: matchedBooking.amountNaira,
+        status: matchedBooking.status,
+      };
+    }
+
     if (upper.includes('VIP-BF1') || upper.includes('BF1')) {
       return {
         valid: true,
+        bookingId: 'BK-9912',
+        vertical: 'Club' as const,
+        reference: 'VIP Booth 1 (DJ Stage Flank)',
         guestName: 'Chief Femi Adeleke',
+        guestPhone: '+234 803 555 0192',
         details: 'VIP Booth 1 (DJ Stage Flank) · ₦500,000 Deposit Paid · 2x Don Julio 1942 + 1x Dom Pérignon on ice',
+        amountNaira: 500000,
+        status: 'Confirmed' as const,
       };
     }
     if (upper.includes('VIP-BF4') || upper.includes('BF4')) {
       return {
         valid: true,
+        bookingId: 'BK-9908',
+        vertical: 'Club' as const,
+        reference: 'VIP Booth 4 (The Royal Alcove)',
         guestName: 'John Doe',
+        guestPhone: '+234 802 444 8812',
         details: 'VIP Booth 4 (The Royal Alcove) · ₦500,000 Deposit Paid · Moët & Don Julio reserved',
+        amountNaira: 500000,
+        status: 'Confirmed' as const,
       };
     }
     if (upper.includes('HOTEL') || upper.includes('304')) {
       return {
         valid: true,
+        bookingId: 'BK-9910',
+        vertical: 'Hotel' as const,
+        reference: 'Standard Lodge Room 304',
         guestName: 'John Doe',
+        guestPhone: '+234 802 444 8812',
         details: 'Standard Lodge Room 304 · Digital Keyless Check-In Authorized',
+        amountNaira: 68000,
+        status: 'Confirmed' as const,
       };
     }
     if (upper.includes('TIX') || upper.includes('TICKET')) {
       return {
         valid: true,
-        guestName: 'Verified Ticket Patron',
+        bookingId: 'BK-9904',
+        vertical: 'Tickets' as const,
+        reference: 'Lagos Skyline Nocturne (VIP Mezzanine)',
+        guestName: 'Sarah Jenkins',
+        guestPhone: '+234 818 900 3311',
         details: 'Lagos Skyline Nocturne · VIP Mezzanine Pass · Fast-track Door Entry',
+        amountNaira: 110000,
+        status: 'Confirmed' as const,
       };
     }
     return {

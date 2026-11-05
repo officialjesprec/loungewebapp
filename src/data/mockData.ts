@@ -1,4 +1,4 @@
-import { BottleItem, BookingRecord, EventTicket, GuestProfile, HotelRoom, KdsOrder, MenuItem, VIPTable } from '../types/hospitality.ts';
+import { BottleItem, BookingRecord, DailyRevenueRecord, EventTicket, GuestProfile, HotelRoom, KdsOrder, MenuItem, VIPTable } from '../types/hospitality.ts';
 
 export const HERO_IMAGE = '/src/assets/images/hero_hospitality_ecosystem_1793843760810.jpg';
 export const CLUB_IMAGE = '/src/assets/images/club_vip_experience_1793843762157.jpg';
@@ -601,4 +601,21 @@ export const INITIAL_GUESTS: GuestProfile[] = [
       },
     ],
   },
+];
+
+export const DAILY_REVENUE_TRENDS: DailyRevenueRecord[] = [
+  { date: 'Oct 29', day: 'Wed', club: 420000, lounge: 260000, hotel: 190000, total: 870000, notes: 'Afrobeats Midweek Mixer' },
+  { date: 'Oct 30', day: 'Thu', club: 580000, lounge: 320000, hotel: 240000, total: 1140000, notes: 'Industry Networking Night' },
+  { date: 'Oct 31', day: 'Fri', club: 1750000, lounge: 620000, hotel: 540000, total: 2910000, notes: 'Friday Peak · VIP Table Rush' },
+  { date: 'Nov 01', day: 'Sat', club: 2100000, lounge: 780000, hotel: 680000, total: 3560000, notes: 'Saturday Grand Gala · 100% Occupancy' },
+  { date: 'Nov 02', day: 'Sun', club: 890000, lounge: 490000, hotel: 380000, total: 1760000, notes: 'Sunset Brunch & Rooftop Lounge' },
+  { date: 'Nov 03', day: 'Mon', club: 240000, lounge: 180000, hotel: 120000, total: 540000, notes: 'Corporate Dining & Lodge Stays' },
+  { date: 'Nov 04', day: 'Tue', club: 310000, lounge: 210000, hotel: 140000, total: 660000, notes: 'Tonight · Active High-Spend Tables' },
+];
+
+export const MONTHLY_WEEKLY_TRENDS: DailyRevenueRecord[] = [
+  { date: 'Week 1', day: 'W1', club: 4100000, lounge: 1850000, hotel: 1650000, total: 7600000, notes: 'Initial Direct Digital Launch' },
+  { date: 'Week 2', day: 'W2', club: 4950000, lounge: 2100000, hotel: 1980000, total: 9030000, notes: 'QR Table Ordering Rollout' },
+  { date: 'Week 3', day: 'W3', club: 5400000, lounge: 2450000, hotel: 2320000, total: 10170000, notes: 'Event-to-Stay 15% Upsell Online' },
+  { date: 'Week 4', day: 'W4', club: 6290000, lounge: 2860000, hotel: 2690000, total: 11840000, notes: 'Current Week · Zero 3P Commission' },
 ];

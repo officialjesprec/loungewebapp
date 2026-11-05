@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BookingRecord, GuestProfile, KdsOrder, MenuItem, VIPTable } from '../types/hospitality.ts';
 import { formatNaira } from '../utils/pricingRules.ts';
+import { RevenueTrendsChart } from './RevenueTrendsChart.tsx';
+import { CameraQrScanner } from './CameraQrScanner.tsx';
 import {
   ShieldCheck,
   TrendingUp,
@@ -28,6 +30,7 @@ import {
   BedDouble,
   X,
   CreditCard,
+  Camera,
 } from 'lucide-react';
 
 interface AdminCrmViewProps {
@@ -39,7 +42,17 @@ interface AdminCrmViewProps {
   onToggleMenuItemStock: (itemId: string) => void;
   onUpdateOrderStatus: (orderId: string, status: KdsOrder['status']) => void;
   onSendCampaign: (guestId: string, channel: 'SMS' | 'Email', message: string) => void;
-  onVerifyQrCode: (code: string) => { valid: boolean; guestName?: string; details?: string };
+  onVerifyQrCode: (code: string) => {
+    valid: boolean;
+    guestName?: string;
+    guestPhone?: string;
+    vertical?: 'Club' | 'Lounge' | 'Hotel' | 'Tickets';
+    reference?: string;
+    details?: string;
+    amountNaira?: number;
+    bookingId?: string;
+    status?: string;
+  };
   onAddMenuItem: (newItem: Omit<MenuItem, 'id'>) => void;
   onDeleteMenuItem: (id: string) => void;
   onUpdateMenuItemPrice: (id: string, newPrice: number) => void;
@@ -82,15 +95,6 @@ export const AdminCrmView: React.FC<AdminCrmViewProps> = ({
   // Booking vertical filter
   const [bookingFilter, setBookingFilter] = useState<'All' | 'Club' | 'Hotel' | 'Tickets' | 'Lounge'>('All');
 
-  // Scanner Simulator state
-  const [scannedCodeInput, setScannedCodeInput] = useState<string>('CRE8-VIP-BF1-9921');
-  const [scanResult, setScanResult] = useState<{
-    tested: boolean;
-    valid: boolean;
-    guestName?: string;
-    details?: string;
-  } | null>(null);
-
   const filteredGuests = guests.filter(
     (g) =>
       g.name.toLowerCase().includes(searchGuestQuery.toLowerCase()) ||
@@ -131,16 +135,6 @@ export const AdminCrmView: React.FC<AdminCrmViewProps> = ({
     onSendCampaign(selectedGuest.id, campaignChannel, campaignMessage);
     setCampaignSentFeedback(`Personalized ${campaignChannel} dispatched instantly to ${selectedGuest.name} (${selectedGuest.phone})`);
     setTimeout(() => setCampaignSentFeedback(null), 5000);
-  };
-
-  const handleRunScan = () => {
-    const result = onVerifyQrCode(scannedCodeInput.trim());
-    setScanResult({
-      tested: true,
-      valid: result.valid,
-      guestName: result.guestName,
-      details: result.details,
-    });
   };
 
   return (
@@ -234,8 +228,8 @@ export const AdminCrmView: React.FC<AdminCrmViewProps> = ({
                 : 'text-[#555555] hover:text-[#143D2B]'
             }`}
           >
-            <QrCode className="w-3.5 h-3.5" />
-            <span>Door Scanner</span>
+            <Camera className="w-3.5 h-3.5 text-[#C67D0A]" />
+            <span>Camera QR Scanner</span>
           </button>
         </div>
       </div>
@@ -278,6 +272,9 @@ export const AdminCrmView: React.FC<AdminCrmViewProps> = ({
               <div className="text-[11px] text-[#555555]">Direct ticketing vs 15% OTA commissions</div>
             </div>
           </div>
+
+          {/* Revenue Trends Visualization with Recharts */}
+          <RevenueTrendsChart />
 
           {/* Revenue by Vertical & Customer Spending Habits */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -991,106 +988,12 @@ export const AdminCrmView: React.FC<AdminCrmViewProps> = ({
         </div>
       )}
 
-      {/* SUB-TAB 6: DOOR SECURITY SCANNER SIMULATOR */}
+      {/* SUB-TAB 6: DEDICATED CAMERA-BASED QR SCANNER */}
       {activeAdminSubTab === 'door_scanner' && (
-        <div className="max-w-2xl mx-auto space-y-6">
-          <div className="bg-white rounded-2xl border border-[#EAE5DC] p-6 sm:p-8 shadow-xs space-y-6 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-[#143D2B]/10 text-[#143D2B] mx-auto flex items-center justify-center">
-              <QrCode className="w-8 h-8 text-[#143D2B]" />
-            </div>
-
-            <div className="space-y-1">
-              <h3 className="font-display text-2xl font-bold text-[#143D2B]">Door Security QR Terminal</h3>
-              <p className="text-xs text-[#555555] font-serif">
-                Security staff hold mobile scanners or tablets to instantly authenticate VIP table deposits, hotel room passes, or club event tickets.
-              </p>
-            </div>
-
-            {/* Input simulator */}
-            <div className="space-y-3 text-left">
-              <label className="text-xs font-serif text-[#777777] uppercase tracking-wider">
-                Simulated QR Scanner Buffer Input
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={scannedCodeInput}
-                  onChange={(e) => setScannedCodeInput(e.target.value)}
-                  placeholder="e.g. CRE8-VIP-BF1-9921"
-                  className="flex-1 px-3 py-2 text-xs font-mono-nums rounded-xl border border-[#EAE5DC] bg-[#FAF8F5] focus:outline-none focus:border-[#143D2B]"
-                />
-                <button
-                  onClick={handleRunScan}
-                  className="px-5 py-2 bg-[#143D2B] hover:bg-[#1E553C] text-white font-serif text-xs font-bold rounded-xl transition-colors cursor-pointer"
-                >
-                  Scan QR
-                </button>
-              </div>
-
-              {/* Quick sample chips */}
-              <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] text-[#777777]">
-                <span>Sample Codes:</span>
-                <button
-                  type="button"
-                  onClick={() => setScannedCodeInput('CRE8-VIP-BF1-9921')}
-                  className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 font-mono-nums cursor-pointer"
-                >
-                  VIP Booth 1
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setScannedCodeInput('CRE8-HOTEL-KEY-304')}
-                  className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 font-mono-nums cursor-pointer"
-                >
-                  Hotel Room 304
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setScannedCodeInput('INVALID-EXPIRED-CODE')}
-                  className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 font-mono-nums cursor-pointer"
-                >
-                  Invalid Code
-                </button>
-              </div>
-            </div>
-
-            {/* Scan Result Card */}
-            {scanResult && scanResult.tested && (
-              <div
-                className={`p-5 rounded-2xl border text-left space-y-2 ${
-                  scanResult.valid
-                    ? 'bg-emerald-50/60 border-emerald-300 text-emerald-950'
-                    : 'bg-red-50/60 border-red-300 text-red-950'
-                }`}
-              >
-                <div className="flex items-center gap-2 font-bold text-sm">
-                  {scanResult.valid ? (
-                    <>
-                      <CheckCircle2 className="w-5 h-5 text-emerald-700" />
-                      <span>ACCESS GRANTED · VALID ENTRY PASS</span>
-                    </>
-                  ) : (
-                    <>
-                      <AlertTriangle className="w-5 h-5 text-red-700" />
-                      <span>ACCESS DENIED · UNRECOGNIZED CODE</span>
-                    </>
-                  )}
-                </div>
-
-                {scanResult.guestName && (
-                  <div className="text-xs">
-                    Guest Verified: <strong>{scanResult.guestName}</strong>
-                  </div>
-                )}
-                {scanResult.details && (
-                  <div className="text-xs text-slate-700 font-serif">
-                    Details: {scanResult.details}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
+        <CameraQrScanner
+          onVerifyQrCode={onVerifyQrCode}
+          onCheckInBooking={onCheckInBooking}
+        />
       )}
     </div>
   );

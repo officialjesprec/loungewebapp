@@ -71,3 +71,37 @@ export function calculateEnterpriseCost(
 export function formatNaira(amount: number): string {
   return '₦' + amount.toLocaleString('en-NG');
 }
+
+export function formatNairaCompact(amount: number): string {
+  if (amount >= 1_000_000) {
+    const val = amount / 1_000_000;
+    return `₦${val % 1 === 0 ? val.toFixed(0) : val.toFixed(1)}M`;
+  }
+  if (amount >= 1_000) {
+    const val = amount / 1_000;
+    return `₦${val % 1 === 0 ? val.toFixed(0) : val.toFixed(0)}k`;
+  }
+  return `₦${amount}`;
+}
+
+export function calculateSegmentTotals(records: { club: number; lounge: number; hotel: number; total: number }[]): {
+  clubTotal: number;
+  loungeTotal: number;
+  hotelTotal: number;
+  grandTotal: number;
+} {
+  return records.reduce(
+    (acc, curr) => ({
+      clubTotal: acc.clubTotal + curr.club,
+      loungeTotal: acc.loungeTotal + curr.lounge,
+      hotelTotal: acc.hotelTotal + curr.hotel,
+      grandTotal: acc.grandTotal + curr.total,
+    }),
+    { clubTotal: 0, loungeTotal: 0, hotelTotal: 0, grandTotal: 0 }
+  );
+}
+
+export function calculatePeakDay<T extends { total: number; date: string; day: string }>(records: T[]): T | null {
+  if (!records || records.length === 0) return null;
+  return records.reduce((max, curr) => (curr.total > max.total ? curr : max), records[0]);
+}
