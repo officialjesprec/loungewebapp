@@ -2,31 +2,86 @@
 
 @layer base {
   :root {
-    --bg-cream: #FAF8F5;
-    --primary-green: #143D2B;
-    --primary-green-dark: #0D2B1E;
-    --primary-green-light: #1E553C;
-    --secondary-amber: #C67D0A;
-    --secondary-amber-dark: #9A6006;
-    --secondary-amber-light: #E09622;
-    --text-grey-80: #333333;
-    --text-grey-60: #555555;
-    --border-cream: #EAE5DC;
+    --bg-alabaster: #FAFAF7;
+    --bg-warm-white: #F5F3EE;
+    --primary-emerald: #1B3A2D;
+    --primary-emerald-dark: #0F2519;
+    --primary-emerald-light: #2A5A44;
+    --accent-gold: #C8973E;
+    --accent-gold-dark: #A07830;
+    --accent-gold-light: #DABA6E;
+    --text-primary: #1A1A1A;
+    --text-secondary: #4A4A4A;
+    --text-muted: #7A7A7A;
+    --border-subtle: #E8E6E1;
+    --border-medium: #D5D2CC;
   }
 
   body {
-    font-family: 'Lora', Georgia, 'Times New Roman', serif;
-    background-color: #FAF8F5;
-    color: #333333;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-alabaster);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, .font-display {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    letter-spacing: -0.015em;
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    letter-spacing: -0.02em;
   }
 
-  .font-mono-nums {
-    font-family: 'JetBrains Mono', monospace;
-    font-variant-numeric: tabular-nums;
+  /* Smooth scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-medium) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--border-medium);
+    border-radius: 3px;
+  }
+}
+
+/* Utility classes */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(232, 230, 225, 0.6);
+  }
+
+  .gold-gradient {
+    background: linear-gradient(135deg, #C8973E 0%, #DABA6E 50%, #C8973E 100%);
+  }
+
+  .emerald-gradient {
+    background: linear-gradient(135deg, #1B3A2D 0%, #2A5A44 50%, #1B3A2D 100%);
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(27, 58, 45, 0.3) 0%,
+      rgba(27, 58, 45, 0.5) 40%,
+      rgba(15, 37, 25, 0.85) 100%
+    );
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
