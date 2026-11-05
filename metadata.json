@@ -1,0 +1,6 @@
+{
+  "name": "The Unified Hospitality Ecosystem - Cre8forte",
+  "description": "Proprietary digital transformation SaaS platform for modern lounges, nightclubs, and hotels. Eliminating operational bottlenecks, optimizing table bookings, in-venue QR ordering, event-to-stay smart upselling, and admin CRM.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

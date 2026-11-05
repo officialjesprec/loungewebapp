@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-cream: #FAF8F5;
+    --primary-green: #143D2B;
+    --primary-green-dark: #0D2B1E;
+    --primary-green-light: #1E553C;
+    --secondary-amber: #C67D0A;
+    --secondary-amber-dark: #9A6006;
+    --secondary-amber-light: #E09622;
+    --text-grey-80: #333333;
+    --text-grey-60: #555555;
+    --border-cream: #EAE5DC;
+  }
+
+  body {
+    font-family: 'Lora', Georgia, 'Times New Roman', serif;
+    background-color: #FAF8F5;
+    color: #333333;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    letter-spacing: -0.015em;
+  }
+
+  .font-mono-nums {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
